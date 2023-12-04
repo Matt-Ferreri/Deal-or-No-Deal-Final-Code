@@ -1,0 +1,94 @@
+#Deal or No Deal
+import random
+suitcases=[1,5,10,20,25,30,40,50,75,100]
+suitcases2=[1,5,10,20,25,30,40,50,75,100]
+numbers=[1,2,3,4,5,6,7,8,9,10]
+shownSuitcasesLeft=[1,5,10,20,25,30,40,50,75,100]
+
+def introduction():
+    print("Welcome to Deal or No Deal.")
+    print("There will be 10 suitcases with amounts ranging from $1-$100.")
+    print("Enter either Deal or No Deal after receiving your offer!")
+
+def game():
+    random.shuffle(suitcases)
+    print("")
+    while True:
+        try:
+            UserSuitcase = int(input("Select your suitcase: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] "))
+        except ValueError or UserSuitcase<1 or UserSuitcase>10:
+            print("Please enter a valid suitcase number.")
+            continue
+        if UserSuitcase<1 or UserSuitcase>10:
+            print("Please enter a valid suitcase number.")
+        else:
+            break
+    UserSuitcase = UserSuitcase - 1
+    UserSuitcase2=suitcases[UserSuitcase]
+    numbers.pop(UserSuitcase)
+    suitcases2.pop(UserSuitcase)
+    suitcases[UserSuitcase]="X"
+    numbers.insert(UserSuitcase,"X")
+    suitcasesLeft = 9
+    Deal = False
+    while(Deal==False and suitcasesLeft>0):
+        print("Suitcases available:",numbers)
+        while True:
+            try:
+                selection = int(input("Select a suitcase: "))
+                #selection = selection - 1
+            except ValueError or selection < 1 or selection > 10:
+                print("Please enter a valid suitcase number.")
+                continue
+            if selection < 1 or selection > 10:
+                print("Please enter a valid suitcase number.")
+                continue
+            if numbers[selection-1]=="X":
+                print("Please enter a value for a new suitcase.")
+            else:
+                break
+        selection = selection - 1
+        for x in range(len(suitcases)):
+            if x==selection:
+                print("The price is: $",suitcases[selection])
+        for y in range(len(shownSuitcasesLeft)):
+            if shownSuitcasesLeft[y]==suitcases[selection]:
+                shownSuitcasesLeft[y]= "X"
+        suitcases[selection] = "X"
+        numbers.pop(selection)
+        for i in range(len(suitcases2)):
+            if suitcases2[i]==suitcases[selection]:
+                suitcases2.pop(suitcases2[i])
+        numbers.insert(selection,"X")
+        print("Prices that remain",shownSuitcasesLeft)
+        for x in range(len(suitcases)):
+            offer=sum(suitcases2)//len(suitcases2)+random.randint(-25,25)
+        print("The banker offers you: $",offer)
+        suitcasesLeft=suitcasesLeft-1
+
+
+        print("Deal or No Deal?")
+        Deal=input()
+        while True:
+            if (Deal=="Deal"):
+                Deal = True
+                break
+            if (Deal=="No Deal"):
+                Deal = False
+                offer=UserSuitcase2
+                break
+            else:
+                Deal=input("Please enter Deal or No Deal. ")
+    return offer
+
+def endgame(z):
+    print("You won: $",z)
+    print("Thank you for playing!")
+
+
+def main():
+    suitcasesLeft=10
+    introduction()
+    z=game()
+    endgame(z)
+main()
